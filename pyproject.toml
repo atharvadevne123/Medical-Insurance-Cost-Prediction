@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "insurance-cost-predictor"
+version = "1.0.0"
+description = "Medical insurance cost prediction using Decision Tree Regression"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+authors = [{name = "atharvadevne123", email = "devneatharva@gmail.com"}]
+dependencies = [
+  "pandas>=1.5",
+  "numpy>=1.23",
+  "scikit-learn>=1.2",
+  "matplotlib>=3.6",
+  "seaborn>=0.12",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+
+[tool.setuptools.package-data]
+"insurance_predictor.data" = ["*.csv"]
