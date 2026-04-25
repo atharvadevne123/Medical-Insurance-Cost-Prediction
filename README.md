@@ -1,3 +1,5 @@
+![Docker](https://github.com/atharvadevne123/Medical-Insurance-Cost-Prediction/actions/workflows/docker-publish.yml/badge.svg) ![Python Package](https://github.com/atharvadevne123/Medical-Insurance-Cost-Prediction/actions/workflows/python-publish.yml/badge.svg) ![Bump Version](https://github.com/atharvadevne123/Medical-Insurance-Cost-Prediction/actions/workflows/bump-version.yml/badge.svg)
+
 # 🏥 Medical Insurance Cost Prediction
 
 This project predicts medical insurance costs based on a person's demographic and health-related information using machine learning techniques. The goal is to help insurance providers estimate charges more accurately and transparently.
