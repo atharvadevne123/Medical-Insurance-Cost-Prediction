@@ -1,5 +1,7 @@
 """insurance_predictor — Medical Insurance Cost Prediction package."""
-from .predictor import load_data, preprocess, train, predict, run
+from __future__ import annotations
 
-__all__ = ["load_data", "preprocess", "train", "predict", "run"]
+from .predictor import feature_importance, load_data, predict, preprocess, run, train
+
+__all__ = ["load_data", "preprocess", "train", "predict", "run", "feature_importance"]
 __version__ = "1.0.0"
