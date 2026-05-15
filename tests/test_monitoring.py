@@ -92,3 +92,39 @@ class TestDriftMonitor:
         monitor = DriftMonitor(p_threshold=p_threshold).fit(reference_df)
         reports = monitor.check(drifted_df)
         assert len(reports) > 0
+
+    def test_report_has_ks_statistic(
+        self, reference_df: pd.DataFrame, similar_df: pd.DataFrame
+    ) -> None:
+        monitor = DriftMonitor().fit(reference_df)
+        reports = monitor.check(similar_df)
+        assert all(0.0 <= r.ks_statistic <= 1.0 for r in reports)
+
+    def test_report_has_p_value(
+        self, reference_df: pd.DataFrame, similar_df: pd.DataFrame
+    ) -> None:
+        monitor = DriftMonitor().fit(reference_df)
+        reports = monitor.check(similar_df)
+        assert all(0.0 <= r.p_value <= 1.0 for r in reports)
+
+    def test_summary_columns(
+        self, reference_df: pd.DataFrame, similar_df: pd.DataFrame
+    ) -> None:
+        monitor = DriftMonitor().fit(reference_df)
+        monitor.check(similar_df)
+        cols = set(monitor.summary().columns)
+        assert {"feature", "ks_statistic", "p_value", "drifted"}.issubset(cols)
+
+    @pytest.mark.parametrize("n_samples", [50, 200, 500])
+    def test_check_with_varying_sample_sizes(
+        self, reference_df: pd.DataFrame, n_samples: int
+    ) -> None:
+        rng = np.random.default_rng(n_samples)
+        cur = pd.DataFrame({
+            "age": rng.normal(40, 10, n_samples),
+            "bmi": rng.normal(28, 5, n_samples),
+            "children": rng.integers(0, 5, n_samples).astype(float),
+        })
+        monitor = DriftMonitor().fit(reference_df)
+        reports = monitor.check(cur)
+        assert len(reports) == 3
