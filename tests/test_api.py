@@ -127,3 +127,27 @@ class TestBatchPredict:
     def test_batch_predict_empty_records_fails(self, client: TestClient) -> None:
         r = client.post("/predict/batch", json={"records": []})
         assert r.status_code == 422
+
+    @pytest.mark.parametrize("n", [1, 5, 10])
+    def test_batch_predict_various_sizes(self, client: TestClient, n: int) -> None:
+        records = [
+            {"age": 30 + i, "sex": "male", "bmi": 25.0, "children": 0, "smoker": "no", "region": "northeast"}
+            for i in range(n)
+        ]
+        data = client.post("/predict/batch", json={"records": records}).json()
+        assert data["count"] == n
+
+
+class TestCorrelationId:
+    def test_response_has_correlation_id(self, client: TestClient) -> None:
+        r = client.get("/health")
+        assert "x-correlation-id" in r.headers
+
+    def test_custom_correlation_id_echoed(self, client: TestClient) -> None:
+        cid = "test-correlation-123"
+        r = client.get("/health", headers={"X-Correlation-ID": cid})
+        assert r.headers.get("x-correlation-id") == cid
+
+    def test_response_time_header_present(self, client: TestClient) -> None:
+        r = client.get("/health")
+        assert "x-response-time" in r.headers
