@@ -96,3 +96,23 @@ class TestBestModel:
         X, Y = preprocessed
         _, metrics, _ = best_model(X, Y)
         assert metrics["test_r2"] > 0.5
+
+    def test_best_model_has_all_metrics(self, preprocessed) -> None:
+        X, Y = preprocessed
+        _, metrics, _ = best_model(X, Y)
+        assert {"train_mae", "test_mae", "test_rmse", "test_r2"}.issubset(metrics)
+
+    def test_best_model_mae_lowest(self, preprocessed) -> None:
+        X, Y = preprocessed
+        _, metrics, _ = best_model(X, Y)
+        _, tree_m = train_decision_tree(X, Y)
+        _, rf_m = train_random_forest(X, Y, n_estimators=10)
+        _, ridge_m = train_ridge(X, Y)
+        min_mae = min(tree_m["test_mae"], rf_m["test_mae"], ridge_m["test_mae"])
+        assert abs(metrics["test_mae"] - min_mae) < 0.01
+
+    @pytest.mark.parametrize("n_estimators", [10, 50])
+    def test_rf_increasing_estimators_improves(self, preprocessed, n_estimators: int) -> None:
+        X, Y = preprocessed
+        _, m = train_random_forest(X, Y, n_estimators=n_estimators)
+        assert m["test_r2"] > 0.5
