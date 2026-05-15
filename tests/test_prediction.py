@@ -73,3 +73,15 @@ class TestRun:
         )
         result = run(csv_path)
         assert result["test_mae"] > 0
+
+    def test_run_returns_r2(self) -> None:
+        result = run()
+        assert "test_r2" in result
+
+    def test_run_returns_rmse(self) -> None:
+        result = run()
+        assert "test_rmse" in result
+
+    def test_run_r2_positive(self) -> None:
+        result = run()
+        assert result["test_r2"] > 0
