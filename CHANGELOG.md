@@ -30,6 +30,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `load_data()` now raises `FileNotFoundError` instead of a cryptic pandas error
 - `preprocess()` validates that `charges` column exists before processing
 
+## [1.1.0] - 2026-05-15
+
+### Added
+- `app/config.py` — `Settings` dataclass with `lru_cache` singleton
+- `app/exceptions.py` — Custom exception hierarchy: `ModelNotLoadedError`, `PredictionError`, `DataValidationError`
+- `app/validation.py` — Business-rule validation beyond Pydantic (cross-field checks, batch size)
+- `app/logging_config.py` — Centralised `configure_logging()` and `get_logger()` helpers
+- `app/utils.py` — `round_to_cents`, `clamp`, `bmi_category` (lru_cache), `dataframe_hash`, `flatten_metrics`
+- `scripts/evaluate_models.py` — Side-by-side model comparison table
+- `scripts/check_data_drift.py` — CLI for KS-test drift comparison between two CSVs
+- `scripts/generate_sample_requests.py` — Random prediction request generator
+- `tests/test_config.py`, `test_exceptions.py`, `test_validation.py`, `test_utils.py`, `test_logging_config.py`, `test_middleware.py`, `test_feature_importance.py`, `test_integration.py`, `test_scripts.py`
+
 ## [1.0.0] - 2024-01-01
 
 ### Added
