@@ -11,7 +11,6 @@ from typing import Any
 import pandas as pd
 from fastapi import FastAPI, HTTPException, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
 
 from app.schemas import (
     BatchPredictRequest,
@@ -26,7 +25,6 @@ from insurance_predictor.predictor import (
     load_data,
     predict,
     preprocess,
-    run,
     train,
 )
 

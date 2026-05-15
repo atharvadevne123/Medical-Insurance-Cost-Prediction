@@ -84,7 +84,6 @@ class TestPreprocess:
 
     def test_Y_values_match_original(self, small_df: pd.DataFrame) -> None:
         _, Y = preprocess(small_df)
-        import numpy as np
         assert np.allclose(Y["charges"].values, small_df["charges"].values)
 
     @pytest.mark.parametrize("region", ["northeast", "northwest", "southeast", "southwest"])

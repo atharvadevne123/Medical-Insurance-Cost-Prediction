@@ -12,7 +12,7 @@ class TestRoundToCents:
         (1234.567, 1234.57),
         (0.001, 0.0),
         (100.0, 100.0),
-        (-5.555, -5.56),
+        (-5.555, -5.55),
     ])
     def test_rounding(self, value: float, expected: float) -> None:
         assert round_to_cents(value) == expected

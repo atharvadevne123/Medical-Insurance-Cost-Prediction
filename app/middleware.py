@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import time
-import uuid
 from collections import defaultdict
 from typing import Callable
 

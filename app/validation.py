@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import logging
-from typing import Optional
 
 from app.exceptions import DataValidationError
 from app.schemas import PredictRequest

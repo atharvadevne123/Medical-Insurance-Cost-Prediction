@@ -1,7 +1,7 @@
 """Pydantic schemas for request/response validation."""
 from __future__ import annotations
 
-from typing import Literal, Optional
+from typing import Literal
 
 from pydantic import BaseModel, Field
 

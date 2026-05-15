@@ -10,7 +10,7 @@ from fastapi.testclient import TestClient
 from app.models import best_model
 from app.monitoring import DriftMonitor
 from app.persistence import load_model, save_model
-from insurance_predictor.predictor import load_data, predict, preprocess, run
+from insurance_predictor.predictor import load_data, preprocess, run
 
 
 class TestEndToEndPipeline:
@@ -29,7 +29,7 @@ class TestEndToEndPipeline:
     def test_train_and_persist_roundtrip(self) -> None:
         df = load_data()
         X, Y = preprocess(df)
-        model, metrics = best_model(X, Y)
+        model, metrics, _ = best_model(X, Y)
         with tempfile.TemporaryDirectory() as tmpdir:
             path = pathlib.Path(tmpdir) / "best_model.joblib"
             save_model(model, path)
