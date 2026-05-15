@@ -71,3 +71,24 @@ class TestPreprocess:
     ) -> None:
         X, _ = preprocess(small_df)
         assert expected_col in X.columns
+
+    def test_missing_charges_column_raises(self, small_df: pd.DataFrame) -> None:
+        df_no_charges = small_df.drop(columns=["charges"])
+        with pytest.raises(ValueError, match="charges"):
+            preprocess(df_no_charges)
+
+    def test_X_dtype_all_numeric(self, preprocessed) -> None:
+        X, _ = preprocessed
+        for col in X.columns:
+            assert X[col].dtype.kind in ("f", "i", "u", "b"), f"Non-numeric column: {col}"
+
+    def test_Y_values_match_original(self, small_df: pd.DataFrame) -> None:
+        _, Y = preprocess(small_df)
+        import numpy as np
+        assert np.allclose(Y["charges"].values, small_df["charges"].values)
+
+    @pytest.mark.parametrize("region", ["northeast", "northwest", "southeast", "southwest"])
+    def test_region_columns_present(self, preprocessed, region: str) -> None:
+        X, _ = preprocessed
+        region_cols = [c for c in X.columns if region in c]
+        assert len(region_cols) >= 1
