@@ -75,3 +75,27 @@ class TestTrain:
         # Not identical (very unlikely to be same with different seeds)
         assert isinstance(m1["test_mae"], float)
         assert isinstance(m2["test_mae"], float)
+
+    def test_metrics_has_rmse(self, preprocessed) -> None:
+        X, Y = preprocessed
+        _, m = train(X, Y)
+        assert "test_rmse" in m
+        assert m["test_rmse"] >= m["test_mae"]
+
+    def test_metrics_has_r2(self, preprocessed) -> None:
+        X, Y = preprocessed
+        _, m = train(X, Y)
+        assert "test_r2" in m
+        assert -1.0 <= m["test_r2"] <= 1.0
+
+    def test_r2_positive_for_good_model(self, preprocessed) -> None:
+        X, Y = preprocessed
+        _, m = train(X, Y)
+        assert m["test_r2"] > 0.5
+
+    @pytest.mark.parametrize("min_samples_split", [5, 9, 20])
+    def test_varying_min_samples_split(self, preprocessed, min_samples_split: int) -> None:
+        X, Y = preprocessed
+        model, m = train(X, Y, min_samples_split=min_samples_split)
+        assert model.min_samples_split == min_samples_split
+        assert m["test_mae"] >= 0
