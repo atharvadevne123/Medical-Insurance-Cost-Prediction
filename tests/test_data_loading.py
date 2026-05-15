@@ -61,3 +61,18 @@ class TestLoadData:
     @pytest.mark.parametrize("col", ["age", "bmi", "charges"])
     def test_numeric_columns(self, sample_df: pd.DataFrame, col: str) -> None:
         assert pd.api.types.is_numeric_dtype(sample_df[col])
+
+    def test_row_count_matches_known(self, sample_df: pd.DataFrame) -> None:
+        assert len(sample_df) == 1338
+
+    def test_charges_mean_reasonable(self, sample_df: pd.DataFrame) -> None:
+        mean_charge = sample_df["charges"].mean()
+        assert 5000 < mean_charge < 20000
+
+    def test_age_distribution_has_both_halves(self, sample_df: pd.DataFrame) -> None:
+        assert (sample_df["age"] < 40).any()
+        assert (sample_df["age"] >= 40).any()
+
+    @pytest.mark.parametrize("region", ["northeast", "northwest", "southeast", "southwest"])
+    def test_all_regions_present(self, sample_df: pd.DataFrame, region: str) -> None:
+        assert region in sample_df["region"].values
